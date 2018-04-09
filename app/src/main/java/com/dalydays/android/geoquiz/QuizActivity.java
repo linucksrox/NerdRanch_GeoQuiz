@@ -2,7 +2,6 @@ package com.dalydays.android.geoquiz;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,9 +34,7 @@ public class QuizActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast correctToast = Toast.makeText(QuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT);
-                correctToast.setGravity(Gravity.TOP, 0, 0);
-                correctToast.show();
+                checkAnswer(true);
             }
         });
 
@@ -45,7 +42,7 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(QuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
+                checkAnswer(false);
             }
         });
 
@@ -65,5 +62,20 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+    }
+
+    private void checkAnswer(boolean userPressedTrue) {
+        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+
+        int messageResId = 0;
+
+        if (userPressedTrue == answerIsTrue) {
+            messageResId = R.string.correct_toast;
+        }
+        else {
+            messageResId = R.string.incorrect_toast;
+        }
+
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 }
