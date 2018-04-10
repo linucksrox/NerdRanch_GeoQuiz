@@ -82,7 +82,7 @@ public class QuizActivity extends AppCompatActivity {
     private void changeQuestion(int increment) {
         mCurrentIndex = (mCurrentIndex + increment)  % mQuestionBank.length;
         if (mCurrentIndex < 0) {
-            mCurrentIndex = 0;
+            mCurrentIndex += mQuestionBank.length;
         }
         updateQuestion();
     }
