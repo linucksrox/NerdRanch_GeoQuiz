@@ -50,18 +50,28 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                updateQuestion();
+                changeQuestion(1);
             }
         });
 
         mQuestionTextView = findViewById(R.id.question_text_view);
+        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeQuestion(1);
+            }
+        });
         updateQuestion();
     }
 
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+    }
+
+    private void changeQuestion(int increment) {
+        mCurrentIndex = (mCurrentIndex + increment)  % mQuestionBank.length;
+        updateQuestion();
     }
 
     private void checkAnswer(boolean userPressedTrue) {
