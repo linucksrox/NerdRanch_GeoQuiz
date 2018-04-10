@@ -14,4 +14,5 @@
     <string name="question_americas">The Amazon River is the longest river in the Americas.</string>
     <string name="question_asia">Lake Baikal is the world\'s oldest and deepest freshwater lake.</string>
     <string name="question_australia">Canberra is the capital of Australia.</string>
+    <string name="prev_button_text">Prev</string>
 </resources>
