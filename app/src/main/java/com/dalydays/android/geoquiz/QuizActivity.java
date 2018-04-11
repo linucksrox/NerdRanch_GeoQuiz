@@ -26,6 +26,8 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_oceans, true)
     };
 
+    private boolean[] isQuestionAnswered = new boolean[mQuestionBank.length];
+
     private int mCurrentIndex = 0;
 
     private static final String TAG = "QuizActivity";
@@ -88,6 +90,8 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+
+        toggleAnswerButtons();
     }
 
     private void changeQuestion(int increment) {
@@ -99,6 +103,10 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
+        // mark this question as answered and disable the true/false buttons
+        isQuestionAnswered[mCurrentIndex] = true;
+        toggleAnswerButtons();
+
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
 
         int messageResId = 0;
@@ -111,6 +119,18 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void toggleAnswerButtons() {
+        // disable answer buttons if this question was already answered, otherwise re-enable them
+        if (isQuestionAnswered[mCurrentIndex]) {
+            mTrueButton.setEnabled(false);
+            mFalseButton.setEnabled(false);
+        }
+        else {
+            mTrueButton.setEnabled(true);
+            mFalseButton.setEnabled(true);
+        }
     }
 
     @Override
