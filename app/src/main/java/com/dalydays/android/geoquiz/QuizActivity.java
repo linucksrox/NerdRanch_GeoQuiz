@@ -27,7 +27,7 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private boolean[] isQuestionAnswered = new boolean[mQuestionBank.length];
-
+    private float score = 0;
     private int mCurrentIndex = 0;
 
     private static final String TAG = "QuizActivity";
@@ -112,6 +112,7 @@ public class QuizActivity extends AppCompatActivity {
         int messageResId = 0;
 
         if (userPressedTrue == answerIsTrue) {
+            score++;
             messageResId = R.string.correct_toast;
         }
         else {
@@ -119,6 +120,20 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+
+        // Check if all questions are answered, then show a Toast with the percentage score
+        // count the remaining questions to answer
+        int remainingQuestionCount = 0;
+        for (boolean b : isQuestionAnswered) {
+            if (!b) {
+                remainingQuestionCount++;
+            }
+        }
+        // if no questions remain, toast the score
+        if (remainingQuestionCount == 0) {
+            int percentScore = (int) ((score / mQuestionBank.length) * 100);
+            Toast.makeText(this, getString(R.string.percent_score, percentScore), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void toggleAnswerButtons() {
