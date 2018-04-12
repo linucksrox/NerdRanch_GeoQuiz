@@ -1,6 +1,6 @@
 package com.dalydays.android.geoquiz;
 
-public class Question {
+class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
 

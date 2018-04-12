@@ -17,7 +17,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
 
-    private Question[] mQuestionBank = new Question[] {
+    private final Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_africa, false),
             new Question(R.string.question_americas, true),
             new Question(R.string.question_asia, true),
@@ -26,7 +26,7 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_oceans, true)
     };
 
-    private boolean[] isQuestionAnswered = new boolean[mQuestionBank.length];
+    private final boolean[] isQuestionAnswered = new boolean[mQuestionBank.length];
     private float score = 0;
     private int mCurrentIndex = 0;
 
@@ -109,7 +109,7 @@ public class QuizActivity extends AppCompatActivity {
 
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
 
-        int messageResId = 0;
+        int messageResId;
 
         if (userPressedTrue == answerIsTrue) {
             score++;
