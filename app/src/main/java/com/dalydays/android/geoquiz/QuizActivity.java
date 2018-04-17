@@ -1,7 +1,5 @@
 package com.dalydays.android.geoquiz;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,13 +33,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
-    private static final String EXTRA_ANSWER_IS_TRUE = "com.dalydays.anrdoid.geoquiz";
-
-    public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
-        Intent intent = new Intent(packageContext, CheatActivity.class);
-        intent.putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue);
-        return intent;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +83,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // start CheatActivity
-                startActivity(newIntent(QuizActivity.this, mQuestionBank[mCurrentIndex].isAnswerTrue()));
+                startActivity(CheatActivity.newIntent(QuizActivity.this, mQuestionBank[mCurrentIndex].isAnswerTrue()));
             }
         });
 
