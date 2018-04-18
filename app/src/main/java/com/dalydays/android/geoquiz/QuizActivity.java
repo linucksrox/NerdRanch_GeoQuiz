@@ -30,9 +30,9 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private final boolean[] isQuestionAnswered = new boolean[mQuestionBank.length];
+    private boolean[] mIsCheater = new boolean[mQuestionBank.length];
     private float score = 0;
     private int mCurrentIndex = 0;
-    private boolean mIsCheater;
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
@@ -51,7 +51,7 @@ public class QuizActivity extends AppCompatActivity {
             if (data == null) {
                 return;
             }
-            mIsCheater = CheatActivity.wasAnswerShown(data);
+            mIsCheater[mCurrentIndex] = CheatActivity.wasAnswerShown(data);
         }
     }
 
@@ -63,7 +63,7 @@ public class QuizActivity extends AppCompatActivity {
         // restore saved index
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
-            mIsCheater = savedInstanceState.getBoolean(KEY_IS_CHEATER);
+            mIsCheater = savedInstanceState.getBooleanArray(KEY_IS_CHEATER);
         }
 
         setContentView(R.layout.activity_quiz);
@@ -89,7 +89,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // reset cheater status
-                mIsCheater = false;
                 changeQuestion(1);
             }
         });
@@ -146,7 +145,7 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId;
 
-        if (mIsCheater) {
+        if (mIsCheater[mCurrentIndex]) {
             messageResId = R.string.judgment_toast;
         }
         else {
@@ -210,7 +209,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "onSaveInstanceState(Bundle) called");
         outState.putInt(KEY_INDEX, mCurrentIndex);
-        outState.putBoolean(KEY_IS_CHEATER, mIsCheater);
+        outState.putBooleanArray(KEY_IS_CHEATER, mIsCheater);
     }
 
     @Override
