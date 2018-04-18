@@ -1,7 +1,6 @@
 package com.dalydays.android.geoquiz;
 
 import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +36,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_IS_CHEATER = "is_cheater";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     @Override
@@ -63,6 +63,7 @@ public class QuizActivity extends AppCompatActivity {
         // restore saved index
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+            mIsCheater = savedInstanceState.getBoolean(KEY_IS_CHEATER);
         }
 
         setContentView(R.layout.activity_quiz);
@@ -129,7 +130,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void changeQuestion(int increment) {
-        mCurrentIndex = (mCurrentIndex + increment)  % mQuestionBank.length;
+        mCurrentIndex = (mCurrentIndex + increment) % mQuestionBank.length;
         if (mCurrentIndex < 0) {
             mCurrentIndex += mQuestionBank.length;
         }
@@ -209,6 +210,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "onSaveInstanceState(Bundle) called");
         outState.putInt(KEY_INDEX, mCurrentIndex);
+        outState.putBoolean(KEY_IS_CHEATER, mIsCheater);
     }
 
     @Override
