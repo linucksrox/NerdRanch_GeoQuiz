@@ -85,7 +85,7 @@ public class CheatActivity extends AppCompatActivity {
         mAnswerWasShown = true;
         mTimesCheated++;
         updateCheatsRemaining();
-        setAnswerShownResult(true);
+        setAnswerShownResult();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int cx = mShowAnswerButton.getWidth() / 2;
@@ -106,9 +106,9 @@ public class CheatActivity extends AppCompatActivity {
         }
     }
 
-    private void setAnswerShownResult(boolean isAnswerShown) {
+    private void setAnswerShownResult() {
         Intent data = new Intent();
-        data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
+        data.putExtra(EXTRA_ANSWER_SHOWN, true);
         setResult(RESULT_OK, data);
     }
 
