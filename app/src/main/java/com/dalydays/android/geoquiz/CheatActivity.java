@@ -51,6 +51,10 @@ public class CheatActivity extends AppCompatActivity {
             }
         });
 
+        TextView apiLevelTextView = findViewById(R.id.api_level_text_view);
+        int version = Build.VERSION.SDK_INT;
+        apiLevelTextView.setText("API Level " + version);
+
         // restore saved index
         if (savedInstanceState != null) {
             mAnswerWasShown = savedInstanceState.getBoolean(KEY_INDEX);
