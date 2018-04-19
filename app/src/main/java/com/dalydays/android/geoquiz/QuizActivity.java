@@ -19,6 +19,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mPrevButton;
     private Button mCheatButton;
     private TextView mQuestionTextView;
+    private TextView mCheatsRemainingTextView;
 
     private final Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_africa, false),
@@ -33,11 +34,13 @@ public class QuizActivity extends AppCompatActivity {
     private boolean[] mIsCheater = new boolean[mQuestionBank.length];
     private float score = 0;
     private int mCurrentIndex = 0;
+    private int mCheatTokens = 3;
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
     private static final String KEY_IS_CHEATER = "is_cheater";
     private static final int REQUEST_CODE_CHEAT = 0;
+    private static final String KEY_CHEAT_TOKENS = "cheat_tokens";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -51,7 +54,11 @@ public class QuizActivity extends AppCompatActivity {
             if (data == null) {
                 return;
             }
-            mIsCheater[mCurrentIndex] = CheatActivity.wasAnswerShown(data);
+            if (CheatActivity.wasAnswerShown(data)) {
+                mIsCheater[mCurrentIndex] = true;
+                mCheatTokens--;
+                updateCheatsRemaining();
+            }
         }
     }
 
@@ -64,6 +71,7 @@ public class QuizActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
             mIsCheater = savedInstanceState.getBooleanArray(KEY_IS_CHEATER);
+            mCheatTokens = savedInstanceState.getInt(KEY_CHEAT_TOKENS);
         }
 
         setContentView(R.layout.activity_quiz);
@@ -119,6 +127,9 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
         updateQuestion();
+
+        mCheatsRemainingTextView = findViewById(R.id.cheats_remaining_text_view);
+        updateCheatsRemaining();
     }
 
     private void updateQuestion() {
@@ -186,6 +197,13 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
+    private void updateCheatsRemaining() {
+        mCheatsRemainingTextView.setText(mCheatTokens + " Cheats Remaining");
+        if (mCheatTokens <= 0) {
+            mCheatButton.setEnabled(false);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -210,6 +228,7 @@ public class QuizActivity extends AppCompatActivity {
         Log.i(TAG, "onSaveInstanceState(Bundle) called");
         outState.putInt(KEY_INDEX, mCurrentIndex);
         outState.putBooleanArray(KEY_IS_CHEATER, mIsCheater);
+        outState.putInt(KEY_CHEAT_TOKENS, mCheatTokens);
     }
 
     @Override

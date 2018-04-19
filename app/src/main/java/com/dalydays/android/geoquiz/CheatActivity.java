@@ -16,17 +16,13 @@ public class CheatActivity extends AppCompatActivity {
 
     private boolean mAnswerIsTrue;
     private boolean mAnswerWasShown;
-    private int mTimesCheated;
 
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
-    private TextView cheatsRemainingTextView;
 
     private static final String EXTRA_ANSWER_IS_TRUE = "com.dalydays.android.geoquiz.answer_is_true";
     private static final String EXTRA_ANSWER_SHOWN = "com.dalydays.android.geoquiz.answer_shown";
     private static final String KEY_ANSWER_SHOWN = "answer_shown";
-    private static final String KEY_TIMES_CHEATED = "times_cheated";
-    private static final int MAX_CHEAT_TOKENS = 3;
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
         Intent intent = new Intent(packageContext, CheatActivity.class);
@@ -59,18 +55,11 @@ public class CheatActivity extends AppCompatActivity {
         int version = Build.VERSION.SDK_INT;
         apiLevelTextView.setText("API Level " + version);
 
-        cheatsRemainingTextView = findViewById(R.id.cheats_remaining_text_view);
-        updateCheatsRemaining();
-
         // restore saved index
         if (savedInstanceState != null) {
             mAnswerWasShown = savedInstanceState.getBoolean(KEY_ANSWER_SHOWN);
             if (mAnswerWasShown) {
                 showAnswer();
-            }
-            mTimesCheated = savedInstanceState.getInt(KEY_TIMES_CHEATED);
-            if (mTimesCheated >= MAX_CHEAT_TOKENS) {
-                mShowAnswerButton.setEnabled(false);
             }
         }
     }
@@ -83,8 +72,6 @@ public class CheatActivity extends AppCompatActivity {
             mAnswerTextView.setText(R.string.false_button);
         }
         mAnswerWasShown = true;
-        mTimesCheated++;
-        updateCheatsRemaining();
         setAnswerShownResult();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -112,14 +99,9 @@ public class CheatActivity extends AppCompatActivity {
         setResult(RESULT_OK, data);
     }
 
-    private void updateCheatsRemaining() {
-        cheatsRemainingTextView.setText((MAX_CHEAT_TOKENS - mTimesCheated) + " Cheats Remaining");
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_ANSWER_SHOWN, mAnswerWasShown);
-        outState.putInt(KEY_TIMES_CHEATED, mTimesCheated);
     }
 }
